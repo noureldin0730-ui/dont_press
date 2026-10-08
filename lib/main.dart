@@ -1135,3 +1135,22 @@ class _EndingScreen extends StatelessWidget {
 
 Widget _actionButton(String label, VoidCallback onTap) {
   return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+      decoration: BoxDecoration(
+        border: Border.all(color: P.mid),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        label,
+        textDirection: TextDirection.rtl,
+        style: const TextStyle(
+          color: P.white,
+          fontSize: 15,
+          letterSpacing: 1,
+        ),
+      ),
+    ),
+  );
+}
