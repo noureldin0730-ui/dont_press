@@ -25,13 +25,12 @@ class DontPressApp extends StatelessWidget {
   }
 }
 
-// ─── الألوان الأساسية ───────────────────────────────────────────────────────
+// ─── الألوان ────────────────────────────────────────────────────────────────
 
 class P {
   static const bg = Color(0xFF050505);
   static const dim = Color(0xFF6A6A6A);
   static const mid = Color(0xFFAA3333);
-  static const hot = Color(0xFFCC2222);
   static const rare = Color(0xFFFF4444);
   static const white = Color(0xFFE0E0E0);
 }
@@ -59,10 +58,48 @@ const List<Stage> kStages = [
   Stage(id: 5, title: 'الكود السري', brief: '3 أرقام هتظهر لحظة. احفظهم وأدخلهم.', maxAttempts: 3),
   Stage(id: 6, title: 'لا تنظر', brief: 'الشاشة هتعتم. اضغط من غير ما تشوف.', maxAttempts: 3),
   Stage(id: 7, title: 'المتحرك', brief: '5 أزرار. واحد بس بيتحرك. اضغطه.', maxAttempts: 3),
-  Stage(id: 8, title: 'العد التنازلي', brief: 'اضغط قبل ما الوقت يخلص. الوقت بيقصر.', maxAttempts: 3),
+  Stage(id: 8, title: 'العد التنازلي', brief: 'اضغط قبل ما الوقت يخلص.', maxAttempts: 3),
   Stage(id: 9, title: 'الاختيار', brief: 'سؤالين. واحد بيكمل، واحد بينهي.', maxAttempts: 1),
   Stage(id: 10, title: 'الحقيقة', brief: 'الزر الأخير. اضغطه لو تجرؤ.', maxAttempts: 1),
 ];
+
+// ─── زر دائري موحّد ─────────────────────────────────────────────────────────
+
+Widget _roundButton(
+  String label, {
+  required VoidCallback onTap,
+  double size = 120,
+  Color? color,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: const Color(0xFF141414),
+        border: Border.all(color: color ?? P.mid, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: (color ?? P.mid).withOpacity(0.4),
+            blurRadius: 20,
+          ),
+        ],
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color ?? P.mid,
+          fontSize: size * 0.16,
+          letterSpacing: 3,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ),
+  );
+}
 
 // ─── الجذر ──────────────────────────────────────────────────────────────────
 
@@ -108,18 +145,21 @@ class _GameRootState extends State<GameRoot> {
 
   void _showEnding() {
     int code;
-    if (_score >= 800 && _attemptsLeft >= 1) {
+    if (_score >= 800) {
       code = 1;
       _endingTitle = 'النهاية A — الهروب';
-      _endingBody = 'لقد عبرت كل المراحل بذكاء. الزر عرف إنك مش زي الباقيين. الباب اللي ورا الشاشة اتفتح. الشاشة بقت سودة... بس دي المرة الأولى اللي السواد فيها راحة.';
+      _endingBody =
+          'لقد عبرت كل المراحل بذكاء. الزر عرف إنك مش زي الباقيين. الباب اللي ورا الشاشة اتفتح. الشاشة بقت سودة... بس دي أول مرة السواد فيها راحة.';
     } else if (_score >= 500) {
       code = 2;
       _endingTitle = 'النهاية B — الاحتواء';
-      _endingBody = 'لقد نجحت، لكن الزر ما زال شغال. أنت مسكت الحقيقة جزئياً. نص الباب اتفتح. النص التاني... لسه مستني حد.';
+      _endingBody =
+          'لقد نجحت، لكن الزر ما زال شغال. أنت مسكت الحقيقة جزئياً. نص الباب اتفتح. النص التاني... لسه مستني حد.';
     } else {
       code = 3;
       _endingTitle = 'النهاية C — الضياع';
-      _endingBody = 'وصلت للنهاية، لكن الطريق كان مليان أخطاء. الزر ما زال يبتسم. أنت ماشي في مكان مظلم، والهمسات بقت أعلى. ما فيش رجوع.';
+      _endingBody =
+          'وصلت للنهاية، لكن الطريق كان مليان أخطاء. الزر ما زال يبتسم. أنت ماشي في مكان مظلم، والهمسات بقت أعلى. ما فيش رجوع.';
     }
     setState(() {
       _endingCode = code;
@@ -140,7 +180,7 @@ class _GameRootState extends State<GameRoot> {
   @override
   Widget build(BuildContext context) {
     if (_endingShown) {
-      return EndingScreen(
+      return _EndingScreen(
         title: _endingTitle,
         body: _endingBody,
         code: _endingCode,
@@ -148,47 +188,42 @@ class _GameRootState extends State<GameRoot> {
         onRestart: _restart,
       );
     }
-
     if (_gameOver) {
-      return GameOverScreen(
+      return _GameOverScreen(
         stage: kStages[_stageIndex],
         score: _score,
         onRetry: () => _startStage(_stageIndex),
         onRestart: _restart,
       );
     }
-
     final stage = kStages[_stageIndex];
-    return StageScreen(
+    return _StageScreen(
       key: ValueKey('stage_${stage.id}_$_attemptsLeft'),
       stage: stage,
       attemptsLeft: _attemptsLeft,
       score: _score,
       onWin: _stageWin,
       onFail: _stageFail,
-      onAttemptsDepleted: () {},
     );
   }
 }
 
 // ─── شاشة المرحلة ───────────────────────────────────────────────────────────
 
-class StageScreen extends StatelessWidget {
+class _StageScreen extends StatelessWidget {
   final Stage stage;
   final int attemptsLeft;
   final int score;
   final void Function(int points) onWin;
   final VoidCallback onFail;
-  final VoidCallback onAttemptsDepleted;
 
-  const StageScreen({
+  const _StageScreen({
     super.key,
     required this.stage,
     required this.attemptsLeft,
     required this.score,
     required this.onWin,
     required this.onFail,
-    required this.onAttemptsDepleted,
   });
 
   @override
@@ -198,26 +233,23 @@ class StageScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // شريط علوي
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('المرحلة ${stage.id} / ${kStages.length}',
-                      style: const TextStyle(color: P.dim, fontSize: 12, letterSpacing: 2)),
+                      style: const TextStyle(color: P.dim, fontSize: 12)),
                   Text('النقاط: $score',
-                      style: const TextStyle(color: P.mid, fontSize: 12, letterSpacing: 2)),
+                      style: const TextStyle(color: P.mid, fontSize: 12)),
                   Text('المحاولات: $attemptsLeft',
                       style: TextStyle(
                           color: attemptsLeft <= 1 ? P.rare : P.dim,
-                          fontSize: 12,
-                          letterSpacing: 2)),
+                          fontSize: 12)),
                 ],
               ),
             ),
             const Divider(color: Color(0xFF1A1A1A), height: 1),
-            // عنوان وشرح المرحلة
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Column(
@@ -228,25 +260,24 @@ class StageScreen extends StatelessWidget {
                       style: const TextStyle(
                           color: P.white,
                           fontSize: 18,
-                          letterSpacing: 1,
                           fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   Text(stage.brief,
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.rtl,
-                      style: const TextStyle(color: P.dim, fontSize: 13, height: 1.6)),
+                      style: const TextStyle(
+                          color: P.dim, fontSize: 13, height: 1.6)),
                 ],
               ),
             ),
-            // جسم المرحلة
-            Expanded(child: _buildStageBody(context)),
+            Expanded(child: _buildStageBody()),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStageBody(BuildContext context) {
+  Widget _buildStageBody() {
     switch (stage.id) {
       case 1:
         return _Stage1(onWin: () => onWin(100), onFail: onFail);
@@ -274,9 +305,7 @@ class StageScreen extends StatelessWidget {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 1 — اضغط 20 ضغطة في 10 ثواني، الزر بيتحرك
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 1 — اضغط 20 في 10 ثواني، الزر بيتحرك ═══
 
 class _Stage1 extends StatefulWidget {
   final VoidCallback onWin;
@@ -333,29 +362,29 @@ class _Stage1State extends State<_Stage1> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('$_timeLeft',
-            style: const TextStyle(color: P.mid, fontSize: 40, letterSpacing: 4)),
-        const SizedBox(height: 8),
-        Text('$_count / 20',
-            style: const TextStyle(color: P.dim, fontSize: 16, letterSpacing: 2)),
-        const SizedBox(height: 40),
-        AnimatedPositioned(
-          duration: const Duration(milliseconds: 200),
-          left: _pos.dx,
-          top: _pos.dy,
-          child: _roundButton('PRESS', onTap: _tap),
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('$_timeLeft',
+              style: const TextStyle(
+                  color: P.mid, fontSize: 40, letterSpacing: 4)),
+          const SizedBox(height: 8),
+          Text('$_count / 20',
+              style: const TextStyle(
+                  color: P.dim, fontSize: 16, letterSpacing: 2)),
+          const SizedBox(height: 60),
+          Transform.translate(
+            offset: _pos,
+            child: _roundButton('PRESS', onTap: _tap),
+          ),
+        ],
+      ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 2 — 3 أزرار، واحد صح
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 2 — 3 أزرار، واحد صح ═══
 
 class _Stage2 extends StatefulWidget {
   final VoidCallback onWin;
@@ -391,17 +420,16 @@ class _Stage2State extends State<_Stage2> {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(3, (i) {
-          return _roundButton('PRESS', onTap: () => _press(i), size: 90);
-        }),
+        children: List.generate(
+          3,
+          (i) => _roundButton('PRESS', size: 90, onTap: () => _press(i)),
+        ),
       ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 3 — الصمت: متضغطش 5 ثواني
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 3 — الصمت 5 ثواني ═══
 
 class _Stage3 extends StatefulWidget {
   final VoidCallback onWin;
@@ -444,25 +472,25 @@ class _Stage3State extends State<_Stage3> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(_failed ? 'فشلت.' : 'لا تضغط... $_timeLeft',
-            textDirection: TextDirection.rtl,
-            style: TextStyle(
-                color: _failed ? P.rare : P.mid,
-                fontSize: 22,
-                letterSpacing: 2)),
-        const SizedBox(height: 60),
-        _roundButton('PRESS', onTap: _onPress),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(_failed ? 'فشلت.' : 'لا تضغط... $_timeLeft',
+              textDirection: TextDirection.rtl,
+              style: TextStyle(
+                  color: _failed ? P.rare : P.mid,
+                  fontSize: 22,
+                  letterSpacing: 2)),
+          const SizedBox(height: 60),
+          _roundButton('PRESS', onTap: _onPress),
+        ],
+      ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 4 — الترتيب: احفظ الترتيب واضغطه
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 4 — الترتيب ═══
 
 class _Stage4 extends StatefulWidget {
   final VoidCallback onWin;
@@ -531,39 +559,41 @@ class _Stage4State extends State<_Stage4> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(_showing ? 'احفظ الترتيب...' : 'كرر الترتيب',
-            textDirection: TextDirection.rtl,
-            style: const TextStyle(color: P.mid, fontSize: 18)),
-        const SizedBox(height: 40),
-        Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          alignment: WrapAlignment.center,
-          children: List.generate(4, (i) {
-            final isHighlight =
-                _showing && _showIdx < _order.length && _order[_showIdx] == i;
-            return _roundButton(
-              isHighlight ? '●' : 'PRESS',
-              size: 80,
-              color: isHighlight ? P.rare : null,
-              onTap: () => _press(i),
-            );
-          }),
-        ),
-        const SizedBox(height: 20),
-        Text(_input.map((e) => '${e + 1}').join(' - '),
-            style: const TextStyle(color: P.dim, fontSize: 14, letterSpacing: 2)),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(_showing ? 'احفظ الترتيب...' : 'كرر الترتيب',
+              textDirection: TextDirection.rtl,
+              style: const TextStyle(color: P.mid, fontSize: 18)),
+          const SizedBox(height: 40),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            alignment: WrapAlignment.center,
+            children: List.generate(4, (i) {
+              final isHighlight = _showing &&
+                  _showIdx < _order.length &&
+                  _order[_showIdx] == i;
+              return _roundButton(
+                isHighlight ? '●' : 'PRESS',
+                size: 80,
+                color: isHighlight ? P.rare : null,
+                onTap: () => _press(i),
+              );
+            }),
+          ),
+          const SizedBox(height: 20),
+          Text(_input.map((e) => '${e + 1}').join(' - '),
+              style: const TextStyle(
+                  color: P.dim, fontSize: 14, letterSpacing: 2)),
+        ],
+      ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 5 — الكود السري: احفظ 3 أرقام وأدخلهم
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 5 — الكود السري ═══
 
 class _Stage5 extends StatefulWidget {
   final VoidCallback onWin;
@@ -599,7 +629,9 @@ class _Stage5State extends State<_Stage5> {
     setState(() => _input.add(d));
     if (_input.length == 3) {
       bool ok = true;
-      for (int i = 0; i < 3; i++) if (_input[i] != _code[i]) ok = false;
+      for (int i = 0; i < 3; i++) {
+        if (_input[i] != _code[i]) ok = false;
+      }
       if (ok) {
         HapticFeedback.mediumImpact();
         widget.onWin();
@@ -620,45 +652,49 @@ class _Stage5State extends State<_Stage5> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (_showing)
-          Text(_code.join(' '),
-              style: const TextStyle(color: P.rare, fontSize: 48, letterSpacing: 8))
-        else
-          Text(_input.join(' '),
-              style: const TextStyle(color: P.white, fontSize: 48, letterSpacing: 8)),
-        const SizedBox(height: 40),
-        if (!_showing)
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: List.generate(10, (d) {
-              return GestureDetector(
-                onTap: () => _digit(d),
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: P.dim),
-                    shape: BoxShape.circle,
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (_showing)
+            Text(_code.join(' '),
+                style: const TextStyle(
+                    color: P.rare, fontSize: 48, letterSpacing: 8))
+          else
+            Text(_input.join(' '),
+                style: const TextStyle(
+                    color: P.white, fontSize: 48, letterSpacing: 8)),
+          const SizedBox(height: 40),
+          if (!_showing)
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              alignment: WrapAlignment.center,
+              children: List.generate(10, (d) {
+                return GestureDetector(
+                  onTap: () => _digit(d),
+                  child: Container(
+                    width: 56,
+                    height: 56,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: P.dim),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text('$d',
+                        style: const TextStyle(
+                            color: P.white, fontSize: 20)),
                   ),
-                  child: Text('$d',
-                      style: const TextStyle(color: P.white, fontSize: 20)),
-                ),
-              );
-            }),
-          ),
-      ],
+                );
+              }),
+            ),
+        ],
+      ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 6 — لا تنظر: الشاشة بتعتّم
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 6 — لا تنظر ═══
 
 class _Stage6 extends StatefulWidget {
   final VoidCallback onWin;
@@ -670,7 +706,6 @@ class _Stage6 extends StatefulWidget {
 
 class _Stage6State extends State<_Stage6> {
   double _dark = 0.0;
-  final _rng = Random();
   Timer? _t;
 
   @override
@@ -678,9 +713,7 @@ class _Stage6State extends State<_Stage6> {
     super.initState();
     _t = Timer.periodic(const Duration(milliseconds: 300), (t) {
       if (!mounted) return;
-      setState(() {
-        _dark = (_dark + 0.12).clamp(0.0, 1.0);
-      });
+      setState(() => _dark = (_dark + 0.12).clamp(0.0, 1.0));
     });
   }
 
@@ -695,7 +728,7 @@ class _Stage6State extends State<_Stage6> {
     return Stack(
       children: [
         Center(
-          child: _roundButton('PRESS', size: 100, onTap: () {
+          child: _roundButton('PRESS', size: 110, onTap: () {
             HapticFeedback.mediumImpact();
             widget.onWin();
           }),
@@ -713,9 +746,7 @@ class _Stage6State extends State<_Stage6> {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 7 — المتحرك: 5 أزرار، واحد بيتحرك
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 7 — المتحرك ═══
 
 class _Stage7 extends StatefulWidget {
   final VoidCallback onWin;
@@ -735,14 +766,15 @@ class _Stage7State extends State<_Stage7> {
   void initState() {
     super.initState();
     _moving = _rng.nextInt(5);
-    _t = Timer.periodic(const Duration(milliseconds: 500), (t) {
+    _t = Timer.periodic(const Duration(milliseconds: 700), (t) {
       if (!mounted) return;
       setState(() {
-        _offsets[_moving] = Offset(
-          (_rng.nextDouble() - 0.5) * 100,
-          (_rng.nextDouble() - 0.5) * 120,
-        );
+        _offsets[_moving] = Offset.zero;
         _moving = _rng.nextInt(5);
+        _offsets[_moving] = Offset(
+          (_rng.nextDouble() - 0.5) * 80,
+          (_rng.nextDouble() - 0.5) * 80,
+        );
       });
     });
   }
@@ -755,37 +787,37 @@ class _Stage7State extends State<_Stage7> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: List.generate(5, (i) {
-        final isMoving = i == _moving;
-        return AnimatedPositioned(
-          duration: const Duration(milliseconds: 400),
-          left: _offsets[i].dx + (i - 2) * 70.0,
-          top: _offsets[i].dy,
-          child: _roundButton(
-            'PRESS',
-            size: 70,
-            color: isMoving ? P.rare.withOpacity(0.4) : null,
-            onTap: () {
-              if (isMoving) {
-                HapticFeedback.mediumImpact();
-                widget.onWin();
-              } else {
-                HapticFeedback.heavyImpact();
-                widget.onFail();
-              }
-            },
-          ),
-        );
-      }),
+    return Center(
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 20,
+        alignment: WrapAlignment.center,
+        children: List.generate(5, (i) {
+          final isMoving = i == _moving;
+          return Transform.translate(
+            offset: _offsets[i],
+            child: _roundButton(
+              'PRESS',
+              size: 80,
+              color: isMoving ? P.rare : null,
+              onTap: () {
+                if (isMoving) {
+                  HapticFeedback.mediumImpact();
+                  widget.onWin();
+                } else {
+                  HapticFeedback.heavyImpact();
+                  widget.onFail();
+                }
+              },
+            ),
+          );
+        }),
+      ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 8 — العد التنازلي: الوقت بيقصر
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 8 — العد التنازلي ═══
 
 class _Stage8 extends StatefulWidget {
   final VoidCallback onWin;
@@ -809,8 +841,8 @@ class _Stage8State extends State<_Stage8> {
       if (_timeLeft <= 0) {
         t.cancel();
         HapticFeedback.heavyImpact();
-        widget.onFail();
         setState(() => _done = true);
+        widget.onFail();
       }
     });
   }
@@ -823,30 +855,33 @@ class _Stage8State extends State<_Stage8> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        LinearProgressIndicator(
-          value: (_timeLeft / 3.0).clamp(0.0, 1.0),
-          backgroundColor: const Color(0xFF1A1A1A),
-          valueColor: const AlwaysStoppedAnimation(P.rare),
-          minHeight: 6,
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LinearProgressIndicator(
+              value: (_timeLeft / 3.0).clamp(0.0, 1.0),
+              backgroundColor: const Color(0xFF1A1A1A),
+              valueColor: const AlwaysStoppedAnimation(P.rare),
+              minHeight: 6,
+            ),
+            const SizedBox(height: 40),
+            _roundButton('PRESS', size: 110, onTap: () {
+              if (_done) return;
+              _t?.cancel();
+              HapticFeedback.mediumImpact();
+              widget.onWin();
+            }),
+          ],
         ),
-        const SizedBox(height: 40),
-        _roundButton('PRESS', size: 110, onTap: () {
-          if (_done) return;
-          _t?.cancel();
-          HapticFeedback.mediumImpact();
-          widget.onWin();
-        }),
-      ],
+      ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 9 — الاختيار
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 9 — الاختيار ═══
 
 class _Stage9 extends StatefulWidget {
   final VoidCallback onWin;
@@ -880,13 +915,9 @@ class _Stage9State extends State<_Stage9> {
           const SizedBox(height: 40),
           Row(
             children: [
-              Expanded(
-                child: _choiceButton('أفتح', () => _pick(true)),
-              ),
+              Expanded(child: _choiceButton('أفتح', () => _pick(true))),
               const SizedBox(width: 16),
-              Expanded(
-                child: _choiceButton('أغلق', () => _pick(false)),
-              ),
+              Expanded(child: _choiceButton('أغلق', () => _pick(false))),
             ],
           ),
         ],
@@ -906,15 +937,14 @@ class _Stage9State extends State<_Stage9> {
         alignment: Alignment.center,
         child: Text(label,
             textDirection: TextDirection.rtl,
-            style: const TextStyle(color: P.white, fontSize: 18, letterSpacing: 2)),
+            style: const TextStyle(
+                color: P.white, fontSize: 18, letterSpacing: 2)),
       ),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// المرحلة 10 — الحقيقة
-// ═══════════════════════════════════════════════════════════════════════════
+// ═══ المرحلة 10 — الحقيقة ═══
 
 class _Stage10 extends StatefulWidget {
   final VoidCallback onWin;
@@ -944,22 +974,164 @@ class _Stage10State extends State<_Stage10> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('الزر الأخير. الحقيقة كلها هنا.',
-            textDirection: TextDirection.rtl,
-            style: TextStyle(color: P.white, fontSize: 16, height: 1.6)),
-        const SizedBox(height: 60),
-        Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: P.rare.withOpacity(_glow * 0.7),
-                blurRadius: 80,
-                spreadRadius: 10,
-              ),
-            ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('الزر الأخير. الحقيقة كلها هنا.',
+              textDirection: TextDirection.rtl,
+              style: TextStyle(color: P.white, fontSize: 16, height: 1.6)),
+          const SizedBox(height: 60),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: P.rare.withOpacity(_glow * 0.7),
+                  blurRadius: 80,
+                  spreadRadius: 10,
+                ),
+              ],
+            ),
+            child: _roundButton('PRESS', size: 140, onTap: () {
+              HapticFeedback.mediumImpact();
+              widget.onWin();
+            }),
           ),
-          child: _roundButton('PRESS', size: 140
+        ],
+      ),
+    );
+  }
+}
+
+// ═══ شاشة GAME OVER ═══
+
+class _GameOverScreen extends StatelessWidget {
+  final Stage stage;
+  final int score;
+  final VoidCallback onRetry;
+  final VoidCallback onRestart;
+
+  const _GameOverScreen({
+    required this.stage,
+    required this.score,
+    required this.onRetry,
+    required this.onRestart,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: P.bg,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('GAME OVER',
+                    style: TextStyle(
+                        color: P.rare,
+                        fontSize: 32,
+                        letterSpacing: 6,
+                        fontWeight: FontWeight.w700)),
+                const SizedBox(height: 20),
+                Text('فشلت في: ${stage.title}',
+                    textDirection: TextDirection.rtl,
+                    style: const TextStyle(color: P.white, fontSize: 16)),
+                const SizedBox(height: 8),
+                Text('نقاطك: $score',
+                    textDirection: TextDirection.rtl,
+                    style: const TextStyle(color: P.dim, fontSize: 14)),
+                const SizedBox(height: 40),
+                _actionButton('أعد المرحلة', onRetry),
+                const SizedBox(height: 16),
+                _actionButton('من البداية', onRestart),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ═══ شاشة النهاية ═══
+
+class _EndingScreen extends StatelessWidget {
+  final String title;
+  final String body;
+  final int code;
+  final int score;
+  final VoidCallback onRestart;
+
+  const _EndingScreen({
+    required this.title,
+    required this.body,
+    required this.code,
+    required this.score,
+    required this.onRestart,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final Color c;
+    switch (code) {
+      case 1:
+        c = const Color(0xFF44AA44);
+        break;
+      case 2:
+        c = const Color(0xFFAA8833);
+        break;
+      default:
+        c = P.rare;
+    }
+
+    return Scaffold(
+      backgroundColor: P.bg,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('ENDING // ${code.toString().padLeft(2, '0')}',
+                    style: TextStyle(
+                        color: c,
+                        fontSize: 14,
+                        letterSpacing: 6,
+                        fontWeight: FontWeight.w600)),
+                const SizedBox(height: 24),
+                Text(title,
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                    style: TextStyle(
+                        color: c,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700)),
+                const SizedBox(height: 24),
+                Text(body,
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                    style: const TextStyle(
+                        color: P.white, fontSize: 15, height: 1.9)),
+                const SizedBox(height: 32),
+                Text('النقاط النهائية: $score',
+                    style: TextStyle(color: c, fontSize: 14, letterSpacing: 2)),
+                const SizedBox(height: 40),
+                _actionButton('العب مرة تانية', onRestart),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── زر إجراء عام ───────────────────────────────────────────────────────────
+
+Widget _actionButton(String label, VoidCallback onTap) {
+  return GestureDetector(
