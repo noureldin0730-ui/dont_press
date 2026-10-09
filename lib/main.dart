@@ -68,7 +68,7 @@ const List<Stage> kStages = [
   Stage(id: 18, title: 'الارتباك', brief: '8 أزرار. واحد بس بيتحرك.', maxAttempts: 3, whisper: 'كلهم بيتحركوا لو بصيت كفاية.'),
   Stage(id: 19, title: 'القرار الأخير', brief: '3 أزرار. واحد بس بيكمل.', maxAttempts: 1, whisper: 'آخر قرار.'),
   Stage(id: 20, title: 'الباب', brief: 'اضغط 5 ثواني بدون رفع صباعك.', maxAttempts: 1, whisper: 'افتح الباب.'),
-  Stage(id: 21, title: 'الحيار عمك', brief: 'دوس على الزرار.', maxAttempts: 3, whisper: 'الحيار عمك.'),.', maxAttempts: 3, whisper: 'النبض بيقولك إمتى.'),
+  Stage(id: 21, title: 'الظلام', brief: 'الزر مخفي في الضلمة. حس بيه.', maxAttempts: 3, whisper: 'عينك مش هتساعدك هنا.'),
   Stage(id: 22, title: 'التوأم', brief: 'زرين متطابقين. اضغطهم في نفس الوقت.', maxAttempts: 3, whisper: 'الاتنين واحد. أو مش واحد.'),
   Stage(id: 23, title: 'الدوار', brief: 'الزر بيلف حوالين الشاشة. اضغطه 3 مرات.', maxAttempts: 3, whisper: 'مش هتقدر تلحق.'),
   Stage(id: 24, title: 'الصوت', brief: 'الشاشة هتسكت. اعتمد على الإحساس بس.', maxAttempts: 3, whisper: 'حس بالإيد اللي مش شايفها.'),
