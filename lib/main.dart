@@ -68,7 +68,7 @@ const List<Stage> kStages = [
   Stage(id: 18, title: 'الارتباك', brief: '8 أزرار. واحد بس بيتحرك.', maxAttempts: 3, whisper: 'كلهم بيتحركوا لو بصيت كفاية.'),
   Stage(id: 19, title: 'القرار الأخير', brief: '3 أزرار. واحد بس بيكمل.', maxAttempts: 1, whisper: 'آخر قرار.'),
   Stage(id: 20, title: 'الباب', brief: 'اضغط 5 ثواني بدون رفع صباعك.', maxAttempts: 1, whisper: 'افتح الباب.'),
-  Stage(id: 21, title: 'النبض', brief: 'الزر بينبض. اضغط بس لما يوصل لأقصى نبضة.', maxAttempts: 3, whisper: 'النبض بيقولك إمتى.'),
+  Stage(id: 21, title: 'الحيار عمك', brief: 'دوس على الزرار.', maxAttempts: 3, whisper: 'الحيار عمك.'),.', maxAttempts: 3, whisper: 'النبض بيقولك إمتى.'),
   Stage(id: 22, title: 'التوأم', brief: 'زرين متطابقين. اضغطهم في نفس الوقت.', maxAttempts: 3, whisper: 'الاتنين واحد. أو مش واحد.'),
   Stage(id: 23, title: 'الدوار', brief: 'الزر بيلف حوالين الشاشة. اضغطه 3 مرات.', maxAttempts: 3, whisper: 'مش هتقدر تلحق.'),
   Stage(id: 24, title: 'الصوت', brief: 'الشاشة هتسكت. اعتمد على الإحساس بس.', maxAttempts: 3, whisper: 'حس بالإيد اللي مش شايفها.'),
@@ -1188,53 +1188,67 @@ class _Stage20State extends State<_Stage20> {
   }
 }
 
-// ═══ المرحلة 21 — النبض ═══
+// ═══ المرحلة 21 — الحيار عمك ═══
 class _Stage21 extends StatefulWidget {
   final VoidCallback onWin, onFail;
   const _Stage21({required this.onWin, required this.onFail});
   @override
   State<_Stage21> createState() => _Stage21State();
 }
-class _Stage21State extends State<_Stage21> with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
-  bool _clicked = false;
-  @override
-  void initState() {
-    super.initState();
-    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat();
+class _Stage21State extends State<_Stage21> {
+  bool _pressed = false;
+
+  void _press() {
+    if (_pressed) return;
+    HapticFeedback.heavyImpact();
+    setState(() => _pressed = true);
+    Future.delayed(const Duration(milliseconds: 1800), () {
+      if (mounted) widget.onWin();
+    });
   }
-  @override
-  void dispose() { _ctrl.dispose(); super.dispose(); }
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: AnimatedBuilder(
-      animation: _ctrl,
-      builder: (context, _) {
-        final v = (sin(_ctrl.value * 2 * pi) + 1) / 2; // 0..1
-        final size = 100 + v * 60;
-        final isPeak = v > 0.85;
-        return GestureDetector(
-          onTap: _clicked ? null : () {
-            if (isPeak) { HapticFeedback.mediumImpact(); widget.onWin(); }
-            else { HapticFeedback.heavyImpact(); widget.onFail(); }
-            setState(() => _clicked = true);
-          },
-          child: Container(
-            width: size, height: size, alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color(0xFF141414),
-              border: Border.all(color: isPeak ? P.rare : P.mid, width: isPeak ? 4 : 2),
-              boxShadow: [BoxShadow(color: P.rare.withOpacity(v * 0.8), blurRadius: 40 + v * 40)],
+    if (_pressed) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: Text(
+            'الحيار عمك',
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.rtl,
+            style: TextStyle(
+              color: P.rare,
+              fontSize: 64,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 4,
+              height: 1.2,
             ),
-            child: Text('PRESS', style: TextStyle(color: isPeak ? P.rare : P.mid, fontSize: 16, letterSpacing: 3, fontWeight: FontWeight.w700)),
           ),
-        );
-      },
-    ));
+        ),
+      );
+    }
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'دوس على الزرار',
+            textDirection: TextDirection.rtl,
+            style: TextStyle(
+              color: P.white,
+              fontSize: 20,
+              letterSpacing: 2,
+            ),
+          ),
+          const SizedBox(height: 40),
+          _roundButton('PRESS', size: 120, onTap: _press),
+        ],
+      ),
+    );
   }
 }
-
 // ═══ المرحلة 22 — التوأم ═══
 class _Stage22 extends StatefulWidget {
   final VoidCallback onWin, onFail;
