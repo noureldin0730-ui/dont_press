@@ -37,7 +37,14 @@ class Stage {
   final String title;
   final String brief;
   final int maxAttempts;
-  const Stage({required this.id, required this.title, required this.brief, required this.maxAttempts});
+  final String whisper;
+  const Stage({
+    required this.id,
+    required this.title,
+    required this.brief,
+    required this.maxAttempts,
+    required this.whisper,
+  });
 }
 
 const List<Stage> kStages = [
