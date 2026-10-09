@@ -1,5 +1,5 @@
 name: dont_press
-description: A professional task manager built with Flutter.
+description: DON'T PRESS - a mysterious interactive game.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.2
+  audioplayers: ^5.2.1
 
 flutter:
   uses-material-design: true
