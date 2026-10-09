@@ -1188,7 +1188,7 @@ class _Stage20State extends State<_Stage20> {
   }
 }
 
-// ═══ المرحلة 21 — الحيار عمك ═══
+// ═══ المرحلة 21 — الظلام ═══
 class _Stage21 extends StatefulWidget {
   final VoidCallback onWin, onFail;
   const _Stage21({required this.onWin, required this.onFail});
@@ -1196,54 +1196,95 @@ class _Stage21 extends StatefulWidget {
   State<_Stage21> createState() => _Stage21State();
 }
 class _Stage21State extends State<_Stage21> {
-  bool _pressed = false;
+  final _rng = Random();
+  late Offset _hiddenPos;
+  bool _hinted = false;
+  int _misses = 0;
+  bool _done = false;
 
-  void _press() {
-    if (_pressed) return;
-    HapticFeedback.heavyImpact();
-    setState(() => _pressed = true);
-    Future.delayed(const Duration(milliseconds: 1800), () {
-      if (mounted) widget.onWin();
-    });
+  @override
+  void initState() {
+    super.initState();
+    // مكان عشوائي في الشاشة، بعيد عن الحواف
+    _hiddenPos = Offset(
+      60 + _rng.nextDouble() * 200,
+      80 + _rng.nextDouble() * 400,
+    );
+  }
+
+  void _onTapDown(TapDownDetails d) {
+    if (_done) return;
+    final local = d.localPosition;
+    final dist = (local - _hiddenPos).distance;
+    if (dist < 45) {
+      HapticFeedback.mediumImpact();
+      setState(() => _done = true);
+      widget.onWin();
+    } else {
+      HapticFeedback.lightImpact();
+      setState(() {
+        _misses++;
+        _hinted = true;
+      });
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) setState(() => _hinted = false);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_pressed) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'الحيار عمك',
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-            style: TextStyle(
-              color: P.rare,
-              fontSize: 64,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 4,
-              height: 1.2,
-            ),
-          ),
-        ),
-      );
-    }
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      behavior: HitTestBehavior.opaque,
+      child: Stack(
         children: [
-          const Text(
-            'دوس على الزرار',
-            textDirection: TextDirection.rtl,
-            style: TextStyle(
-              color: P.white,
-              fontSize: 20,
-              letterSpacing: 2,
+          // نص صغير جداً في النص يساعد اللاعب
+          const Center(
+            child: Text(
+              'حس بالزر',
+              textDirection: TextDirection.rtl,
+              style: TextStyle(
+                color: Color(0xFF1A1A1A),
+                fontSize: 14,
+                letterSpacing: 2,
+              ),
             ),
           ),
-          const SizedBox(height: 40),
-          _roundButton('PRESS', size: 120, onTap: _press),
+          // لمعة خفيفة لما يغلط
+          if (_hinted)
+            Positioned(
+              left: _hiddenPos.dx - 40,
+              top: _hiddenPos.dy - 40,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: P.rare.withOpacity(0.08),
+                  boxShadow: [
+                    BoxShadow(
+                      color: P.rare.withOpacity(0.15),
+                      blurRadius: 30,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          // الزر المخفي — شفاف تماماً
+          Positioned(
+            left: _hiddenPos.dx - 45,
+            top: _hiddenPos.dy - 45,
+            child: Container(
+              width: 90,
+              height: 90,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
         ],
       ),
     );
