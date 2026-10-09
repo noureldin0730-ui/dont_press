@@ -41,26 +41,36 @@ class Stage {
 }
 
 const List<Stage> kStages = [
-  Stage(id: 1, title: 'لا تضغط 20 مرة', brief: 'الزر بيتحرك. الحق اضغط 20 ضغطة في 10 ثواني.', maxAttempts: 3),
-  Stage(id: 2, title: 'الزر الصح', brief: '3 أزرار. واحد بس هو الصح.', maxAttempts: 3),
-  Stage(id: 3, title: 'الصمت', brief: 'متضغطش خالص لمدة 5 ثواني.', maxAttempts: 2),
-  Stage(id: 4, title: 'الترتيب', brief: '4 أزرار. احفظ الترتيب واضغطه صح.', maxAttempts: 3),
-  Stage(id: 5, title: 'الكود السري', brief: '3 أرقام هتظهر لحظة. احفظهم وأدخلهم.', maxAttempts: 3),
-  Stage(id: 6, title: 'لا تنظر', brief: 'الشاشة هتعتم. اضغط من غير ما تشوف.', maxAttempts: 3),
-  Stage(id: 7, title: 'المتحرك', brief: '5 أزرار. واحد بس بيتحرك. اضغطه.', maxAttempts: 3),
-  Stage(id: 8, title: 'العد التنازلي', brief: 'اضغط قبل ما الوقت يخلص.', maxAttempts: 3),
-  Stage(id: 9, title: 'الاختيار', brief: 'همسة تقول: "افتح الباب."', maxAttempts: 1),
-  Stage(id: 10, title: 'الحقيقة', brief: 'الزر الأخير. اضغطه لو تجرؤ.', maxAttempts: 1),
-  Stage(id: 11, title: 'المرايا', brief: '3 أزرار. واحد بس أصلي. الباقي انعكاس.', maxAttempts: 3),
-  Stage(id: 12, title: 'الهمس', brief: 'كلمة هتظهر لحظة. اكتبها صح.', maxAttempts: 3),
-  Stage(id: 13, title: 'الظل', brief: 'ظل بيتحرك. اضغطه قبل ما يختفي.', maxAttempts: 3),
-  Stage(id: 14, title: 'المتاهة', brief: 'الهدف بيتغير كل ثانية. اجمع 3 إصابات.', maxAttempts: 3),
-  Stage(id: 15, title: 'المقلوب', brief: 'اقرأ بعكس ما تشوف.', maxAttempts: 3),
-  Stage(id: 16, title: 'الذاكرة', brief: '5 رموز تظهر بالترتيب. كررها.', maxAttempts: 3),
-  Stage(id: 17, title: 'الصبر', brief: '10 ثواني بدون لمس. الفخ بيستفزك.', maxAttempts: 2),
-  Stage(id: 18, title: 'الارتباك', brief: '8 أزرار. واحد بس بيتحرك.', maxAttempts: 3),
-  Stage(id: 19, title: 'القرار الأخير', brief: '3 أزرار. واحد بس بيكمل.', maxAttempts: 1),
-  Stage(id: 20, title: 'الباب', brief: 'اضغط 5 ثواني بدون رفع صباعك.', maxAttempts: 1),
+  Stage(id: 1, title: 'لا تضغط 20 مرة', brief: 'الزر بيتحرك. الحق اضغط 20 ضغطة في 10 ثواني.', maxAttempts: 3, whisper: 'سمعت صوت؟ ... يمكن مفيش حاجة.'),
+  Stage(id: 2, title: 'الزر الصح', brief: '3 أزرار. واحد بس هو الصح.', maxAttempts: 3, whisper: 'الزر عارف إنك بتفكر.'),
+  Stage(id: 3, title: 'الصمت', brief: 'متضغطش خالص لمدة 5 ثواني.', maxAttempts: 2, whisper: 'الصمت بيوجع أكتر من الضغط.'),
+  Stage(id: 4, title: 'الترتيب', brief: '4 أزرار. احفظ الترتيب واضغطه صح.', maxAttempts: 3, whisper: 'الترتيب دا كان في مكان تاني.'),
+  Stage(id: 5, title: 'الكود السري', brief: '3 أرقام هتظهر لحظة. احفظهم وأدخلهم.', maxAttempts: 3, whisper: 'الأرقام دي مألوفة؟'),
+  Stage(id: 6, title: 'لا تنظر', brief: 'الشاشة هتعتم. اضغط من غير ما تشوف.', maxAttempts: 3, whisper: 'مين اللي بيضغط؟ إنت ولا الزر؟'),
+  Stage(id: 7, title: 'المتحرك', brief: '5 أزرار. واحد بس بيتحرك. اضغطه.', maxAttempts: 3, whisper: 'الزر بيهرب منك.'),
+  Stage(id: 8, title: 'العد التنازلي', brief: 'اضغط قبل ما الوقت يخلص.', maxAttempts: 3, whisper: 'الوقت مش دايم في صفك.'),
+  Stage(id: 9, title: 'الاختيار', brief: 'همسة تقول: "افتح الباب."', maxAttempts: 1, whisper: 'الباب اللي جواك.'),
+  Stage(id: 10, title: 'الحقيقة', brief: 'الزر الأخير. اضغطه لو تجرؤ.', maxAttempts: 1, whisper: 'مفيش رجوع بعد كده.'),
+  Stage(id: 11, title: 'المرايا', brief: '3 أزرار. واحد بس أصلي. الباقي انعكاس.', maxAttempts: 3, whisper: 'شوف كويس مين إنت.'),
+  Stage(id: 12, title: 'الهمس', brief: 'كلمة هتظهر لحظة. اكتبها صح.', maxAttempts: 3, whisper: 'الكلمة دي هتفضل معاك.'),
+  Stage(id: 13, title: 'الظل', brief: 'ظل بيتحرك. اضغطه قبل ما يختفي.', maxAttempts: 3, whisper: 'الظل بيعرف اسمك.'),
+  Stage(id: 14, title: 'المتاهة', brief: 'الهدف بيتغير كل ثانية. اجمع 3 إصابات.', maxAttempts: 3, whisper: 'التوهان جزء من اللعبة.'),
+  Stage(id: 15, title: 'المقلوب', brief: 'اقرأ بعكس ما تشوف.', maxAttempts: 3, whisper: 'الحقيقة معكوسة.'),
+  Stage(id: 16, title: 'الذاكرة', brief: '5 رموز تظهر بالترتيب. كررها.', maxAttempts: 3, whisper: 'اللي هتنساه هيفضل يفتكرك.'),
+  Stage(id: 17, title: 'الصبر', brief: '10 ثواني بدون لمس. الفخ بيستفزك.', maxAttempts: 2, whisper: 'الزر بيكلمك. اسمعه.'),
+  Stage(id: 18, title: 'الارتباك', brief: '8 أزرار. واحد بس بيتحرك.', maxAttempts: 3, whisper: 'كلهم بيتحركوا لو بصيت كفاية.'),
+  Stage(id: 19, title: 'القرار الأخير', brief: '3 أزرار. واحد بس بيكمل.', maxAttempts: 1, whisper: 'آخر قرار.'),
+  Stage(id: 20, title: 'الباب', brief: 'اضغط 5 ثواني بدون رفع صباعك.', maxAttempts: 1, whisper: 'افتح الباب.'),
+  Stage(id: 21, title: 'النبض', brief: 'الزر بينبض. اضغط بس لما يوصل لأقصى نبضة.', maxAttempts: 3, whisper: 'النبض بيقولك إمتى.'),
+  Stage(id: 22, title: 'التوأم', brief: 'زرين متطابقين. اضغطهم في نفس الوقت.', maxAttempts: 3, whisper: 'الاتنين واحد. أو مش واحد.'),
+  Stage(id: 23, title: 'الدوار', brief: 'الزر بيلف حوالين الشاشة. اضغطه 3 مرات.', maxAttempts: 3, whisper: 'مش هتقدر تلحق.'),
+  Stage(id: 24, title: 'الصوت', brief: 'الشاشة هتسكت. اعتمد على الإحساس بس.', maxAttempts: 3, whisper: 'حس بالإيد اللي مش شايفها.'),
+  Stage(id: 25, title: 'العد التنازلي للفشل', brief: 'كل ثانية بتقربك من الفشل. اضغط بسرعة.', maxAttempts: 2, whisper: 'الوقت بيجري منك.'),
+  Stage(id: 26, title: 'المرايا المتعددة', brief: '5 أزرار. واحد بس بيتحرك ببطء.', maxAttempts: 3, whisper: 'واحد بس بيعرف الطريق.'),
+  Stage(id: 27, title: 'الكمين', brief: '5 ضغطات صح ورا بعض. أي غلطة بتفشل.', maxAttempts: 3, whisper: 'الغلطة الواحدة بتكلف.'),
+  Stage(id: 28, title: 'الحبل', brief: 'الشاشة بتتقطع. اضغط قبل ما تختفي خالص.', maxAttempts: 3, whisper: 'الخيط بيقطع.'),
+  Stage(id: 29, title: 'الاسم', brief: 'اكتب اسمك. بعدين اضغط الزر اللي فيه اسمك.', maxAttempts: 1, whisper: 'إنت مين؟'),
+  Stage(id: 30, title: 'الباب الأخير', brief: 'اضغط الزر 3 مرات. المرة التالتة بتفتح الحقيقة.', maxAttempts: 1, whisper: 'خلاص. ما فيش بعد كده.'),
 ];
 
 Widget _roundButton(String label, {required VoidCallback onTap, double size = 120, Color? color}) {
@@ -299,7 +309,7 @@ class _Stage1 extends StatefulWidget {
 }
 class _Stage1State extends State<_Stage1> {
   int _count = 0;
-  int _timeLeft = 10;
+  int _timeLeft = 20;
   Timer? _t;
   Offset _pos = Offset.zero;
   final _rng = Random();
@@ -1171,6 +1181,468 @@ class _Stage20State extends State<_Stage20> {
   }
 }
 
+// ═══ المرحلة 21 — النبض ═══
+class _Stage21 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage21({required this.onWin, required this.onFail});
+  @override
+  State<_Stage21> createState() => _Stage21State();
+}
+class _Stage21State extends State<_Stage21> with SingleTickerProviderStateMixin {
+  late AnimationController _ctrl;
+  bool _clicked = false;
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat();
+  }
+  @override
+  void dispose() { _ctrl.dispose(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, _) {
+        final v = (sin(_ctrl.value * 2 * pi) + 1) / 2; // 0..1
+        final size = 100 + v * 60;
+        final isPeak = v > 0.85;
+        return GestureDetector(
+          onTap: _clicked ? null : () {
+            if (isPeak) { HapticFeedback.mediumImpact(); widget.onWin(); }
+            else { HapticFeedback.heavyImpact(); widget.onFail(); }
+            setState(() => _clicked = true);
+          },
+          child: Container(
+            width: size, height: size, alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF141414),
+              border: Border.all(color: isPeak ? P.rare : P.mid, width: isPeak ? 4 : 2),
+              boxShadow: [BoxShadow(color: P.rare.withOpacity(v * 0.8), blurRadius: 40 + v * 40)],
+            ),
+            child: Text('PRESS', style: TextStyle(color: isPeak ? P.rare : P.mid, fontSize: 16, letterSpacing: 3, fontWeight: FontWeight.w700)),
+          ),
+        );
+      },
+    ));
+  }
+}
+
+// ═══ المرحلة 22 — التوأم ═══
+class _Stage22 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage22({required this.onWin, required this.onFail});
+  @override
+  State<_Stage22> createState() => _Stage22State();
+}
+class _Stage22State extends State<_Stage22> {
+  bool _leftDown = false;
+  bool _rightDown = false;
+  DateTime? _leftTime;
+  DateTime? _rightTime;
+  void _check() {
+    if (_leftTime != null && _rightTime != null) {
+      final diff = _leftTime!.difference(_rightTime!).inMilliseconds.abs();
+      if (diff < 150) { HapticFeedback.mediumImpact(); widget.onWin(); }
+      else { HapticFeedback.heavyImpact(); widget.onFail(); }
+      setState(() { _leftDown = false; _rightDown = false; _leftTime = null; _rightTime = null; });
+    }
+  }
+  Widget _twin(bool active, void Function() onDown, void Function() onUp) {
+    return GestureDetector(
+      onTapDown: (_) => onDown(),
+      onTapUp: (_) => onUp(),
+      child: Container(width: 120, height: 120, alignment: Alignment.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0xFF141414),
+          border: Border.all(color: active ? P.rare : P.mid, width: active ? 4 : 2),
+          boxShadow: [BoxShadow(color: (active ? P.rare : P.mid).withOpacity(0.5), blurRadius: 20)],
+        ),
+        child: Text('PRESS', style: TextStyle(color: active ? P.rare : P.mid, fontSize: 16, letterSpacing: 3, fontWeight: FontWeight.w700))),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      const Text('اضغطهم في نفس الوقت', textDirection: TextDirection.rtl,
+        style: TextStyle(color: P.dim, fontSize: 14)),
+      const SizedBox(height: 40),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        _twin(_leftDown,
+          () { setState(() { _leftDown = true; _leftTime = DateTime.now(); }); _check(); },
+          () => setState(() => _leftDown = false)),
+        _twin(_rightDown,
+          () { setState(() { _rightDown = true; _rightTime = DateTime.now(); }); _check(); },
+          () => setState(() => _rightDown = false)),
+      ]),
+    ]));
+  }
+}
+
+// ═══ المرحلة 23 — الدوار ═══
+class _Stage23 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage23({required this.onWin, required this.onFail});
+  @override
+  State<_Stage23> createState() => _Stage23State();
+}
+class _Stage23State extends State<_Stage23> with SingleTickerProviderStateMixin {
+  late AnimationController _ctrl;
+  int _hits = 0;
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 3000))..repeat();
+  }
+  @override
+  void dispose() { _ctrl.dispose(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, c) {
+      return Center(child: AnimatedBuilder(
+        animation: _ctrl,
+        builder: (context, _) {
+          final angle = _ctrl.value * 2 * pi;
+          final r = min(c.maxWidth, c.maxHeight) / 2 - 60;
+          final dx = cos(angle) * r;
+          final dy = sin(angle) * r;
+          return Stack(alignment: Alignment.center, children: [
+            Text('$_hits / 3', style: const TextStyle(color: P.mid, fontSize: 32, letterSpacing: 4)),
+            Transform.translate(offset: Offset(dx, dy),
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  setState(() => _hits++);
+                  if (_hits >= 3) { HapticFeedback.mediumImpact(); widget.onWin(); }
+                },
+                child: Container(width: 70, height: 70, alignment: Alignment.center,
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0xFF141414),
+                    border: Border.all(color: P.rare, width: 2),
+                    boxShadow: [BoxShadow(color: P.rare.withOpacity(0.6), blurRadius: 30)]),
+                  child: const Text('PRESS', style: TextStyle(color: P.rare, fontSize: 10, letterSpacing: 1, fontWeight: FontWeight.w700))),
+              )),
+          ]);
+        },
+      ));
+    });
+  }
+}
+
+// ═══ المرحلة 24 — الصوت (الاهتزاز) ═══
+class _Stage24 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage24({required this.onWin, required this.onFail});
+  @override
+  State<_Stage24> createState() => _Stage24State();
+}
+class _Stage24State extends State<_Stage24> {
+  int _count = 0;
+  int _target = 5;
+  bool _done = false;
+  @override
+  void initState() {
+    super.initState();
+    HapticFeedback.vibrate();
+  }
+  void _tap() {
+    if (_done) return;
+    HapticFeedback.lightImpact();
+    setState(() => _count++);
+    if (_count >= _target) {
+      _done = true;
+      HapticFeedback.vibrate();
+      Future.delayed(const Duration(milliseconds: 400), () {
+        if (mounted) widget.onWin();
+      });
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text('$_count / $_target', style: const TextStyle(color: P.mid, fontSize: 28, letterSpacing: 4)),
+      const SizedBox(height: 8),
+      const Text('اتبع الإحساس', textDirection: TextDirection.rtl,
+        style: TextStyle(color: P.dim, fontSize: 13)),
+      const SizedBox(height: 60),
+      _roundButton('PRESS', size: 130, onTap: _tap),
+    ]));
+  }
+}
+
+// ═══ المرحلة 25 — العد التنازلي للفشل ═══
+class _Stage25 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage25({required this.onWin, required this.onFail});
+  @override
+  State<_Stage25> createState() => _Stage25State();
+}
+class _Stage25State extends State<_Stage25> {
+  double _timeLeft = 2.0;
+  Timer? _t;
+  bool _done = false;
+  @override
+  void initState() {
+    super.initState();
+    _t = Timer.periodic(const Duration(milliseconds: 30), (t) {
+      if (!mounted || _done) return;
+      setState(() => _timeLeft -= 0.03);
+      if (_timeLeft <= 0) { t.cancel(); if (!_done) { HapticFeedback.heavyImpact(); widget.onFail(); } }
+    });
+  }
+  @override
+  void dispose() { _t?.cancel(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Padding(padding: const EdgeInsets.all(24), child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text(_timeLeft.toStringAsFixed(1), style: TextStyle(color: _timeLeft < 0.8 ? P.rare : P.mid, fontSize: 60, letterSpacing: 4)),
+      const SizedBox(height: 20),
+      LinearProgressIndicator(value: (_timeLeft / 2.0).clamp(0.0, 1.0),
+        backgroundColor: const Color(0xFF1A1A1A),
+        valueColor: const AlwaysStoppedAnimation(P.rare), minHeight: 6),
+      const SizedBox(height: 60),
+      _roundButton('PRESS', size: 130, onTap: () {
+        if (_done) return;
+        _done = true;
+        _t?.cancel();
+        HapticFeedback.mediumImpact();
+        widget.onWin();
+      }),
+    ])));
+  }
+}
+
+// ═══ المرحلة 26 — المرايا المتعددة ═══
+class _Stage26 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage26({required this.onWin, required this.onFail});
+  @override
+  State<_Stage26> createState() => _Stage26State();
+}
+class _Stage26State extends State<_Stage26> {
+  final _rng = Random();
+  int _moving = 0;
+  final List<Offset> _offsets = List.generate(5, (_) => Offset.zero);
+  Timer? _t;
+  @override
+  void initState() {
+    super.initState();
+    _moving = _rng.nextInt(5);
+    _t = Timer.periodic(const Duration(milliseconds: 1400), (t) {
+      if (!mounted) return;
+      setState(() {
+        _offsets[_moving] = Offset.zero;
+        _moving = _rng.nextInt(5);
+        _offsets[_moving] = Offset((_rng.nextDouble() - 0.5) * 60, (_rng.nextDouble() - 0.5) * 60);
+      });
+    });
+  }
+  @override
+  void dispose() { _t?.cancel(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Wrap(spacing: 20, runSpacing: 20, alignment: WrapAlignment.center,
+      children: List.generate(5, (i) {
+        final isMoving = i == _moving;
+        return Transform.translate(offset: _offsets[i],
+          child: _roundButton('PRESS', size: 75,
+            color: isMoving ? P.rare : null,
+            onTap: () {
+              if (isMoving) { HapticFeedback.mediumImpact(); widget.onWin(); }
+              else { HapticFeedback.heavyImpact(); widget.onFail(); }
+            }));
+      })));
+  }
+}
+
+// ═══ المرحلة 27 — الكمين ═══
+class _Stage27 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage27({required this.onWin, required this.onFail});
+  @override
+  State<_Stage27> createState() => _Stage27State();
+}
+class _Stage27State extends State<_Stage27> {
+  final _rng = Random();
+  int _target = 0;
+  int _streak = 0;
+  int _needed = 5;
+  @override
+  void initState() { super.initState(); _target = _rng.nextInt(4); }
+  void _press(int i) {
+    if (i == _target) {
+      HapticFeedback.lightImpact();
+      setState(() { _streak++; _target = _rng.nextInt(4); });
+      if (_streak >= _needed) { HapticFeedback.mediumImpact(); widget.onWin(); }
+    } else {
+      HapticFeedback.heavyImpact();
+      widget.onFail();
+      setState(() { _streak = 0; _target = _rng.nextInt(4); });
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text('$_streak / $_needed', style: const TextStyle(color: P.mid, fontSize: 32, letterSpacing: 4)),
+      const SizedBox(height: 30),
+      Wrap(spacing: 16, runSpacing: 16, alignment: WrapAlignment.center,
+        children: List.generate(4, (i) => _roundButton(
+          i == _target ? '●' : 'PRESS', size: 80,
+          color: i == _target ? P.rare : null,
+          onTap: () => _press(i)))),
+    ]));
+  }
+}
+
+// ═══ المرحلة 28 — الحبل ═══
+class _Stage28 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage28({required this.onWin, required this.onFail});
+  @override
+  State<_Stage28> createState() => _Stage28State();
+}
+class _Stage28State extends State<_Stage28> {
+  double _opacity = 1.0;
+  Timer? _t;
+  bool _done = false;
+  @override
+  void initState() {
+    super.initState();
+    _t = Timer.periodic(const Duration(milliseconds: 200), (t) {
+      if (!mounted || _done) return;
+      setState(() => _opacity -= 0.03);
+      if (_opacity <= 0) { t.cancel(); if (!_done) { HapticFeedback.heavyImpact(); widget.onFail(); } }
+    });
+  }
+  @override
+  void dispose() { _t?.cancel(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Opacity(opacity: _opacity.clamp(0.0, 1.0), child: Column(
+      mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text('اضغط قبل ما تختفي', textDirection: TextDirection.rtl,
+        style: const TextStyle(color: P.dim, fontSize: 14)),
+      const SizedBox(height: 40),
+      _roundButton('PRESS', size: 130, onTap: () {
+        if (_done) return;
+        _done = true;
+        _t?.cancel();
+        HapticFeedback.mediumImpact();
+        widget.onWin();
+      }),
+    ])));
+  }
+}
+
+// ═══ المرحلة 29 — الاسم ═══
+class _Stage29 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage29({required this.onWin, required this.onFail});
+  @override
+  State<_Stage29> createState() => _Stage29State();
+}
+class _Stage29State extends State<_Stage29> {
+  final _ctrl = TextEditingController();
+  String _name = '';
+  bool _submitted = false;
+  final _rng = Random();
+  late List<bool> _isYou;
+  @override
+  void initState() {
+    super.initState();
+    _isYou = List.generate(4, (_) => false);
+    _isYou[_rng.nextInt(4)] = true;
+  }
+  @override
+  void dispose() { _ctrl.dispose(); super.dispose(); }
+  void _submit() {
+    if (_ctrl.text.trim().isEmpty) return;
+    setState(() { _name = _ctrl.text.trim(); _submitted = true; });
+  }
+  void _press(int i) {
+    if (_isYou[i]) { HapticFeedback.mediumImpact(); widget.onWin(); }
+    else { HapticFeedback.heavyImpact(); widget.onFail(); }
+  }
+  @override
+  Widget build(BuildContext context) {
+    if (!_submitted) {
+      return Center(child: Padding(padding: const EdgeInsets.all(24), child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, children: [
+        const Text('اكتب اسمك', textDirection: TextDirection.rtl,
+          style: TextStyle(color: P.white, fontSize: 18)),
+        const SizedBox(height: 30),
+        TextField(
+          controller: _ctrl, textAlign: TextAlign.center, textDirection: TextDirection.rtl,
+          style: const TextStyle(color: P.white, fontSize: 22),
+          decoration: const InputDecoration(
+            hintText: '...', hintStyle: TextStyle(color: P.dim),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: P.dim)),
+            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: P.mid)),
+          ),
+          onSubmitted: (_) => _submit(),
+        ),
+        const SizedBox(height: 30),
+        _roundButton('ادخل', size: 90, onTap: _submit),
+      ])));
+    }
+    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Text('اضغط على اسمك', textDirection: TextDirection.rtl,
+        style: const TextStyle(color: P.dim, fontSize: 14)),
+      const SizedBox(height: 40),
+      Wrap(spacing: 16, runSpacing: 16, alignment: WrapAlignment.center,
+        children: List.generate(4, (i) {
+          final label = _isYou[i] ? _name : _fakeName();
+          return _roundButton(label, size: 90, onTap: () => _press(i));
+        })),
+    ]));
+  }
+  String _fakeName() {
+    const pool = ['أحمد', 'سارة', 'محمد', 'نور', 'ياسمين', 'علي', 'ليلى', 'خالد'];
+    return pool[_rng.nextInt(pool.length)];
+  }
+}
+
+// ═══ المرحلة 30 — الباب الأخير ═══
+class _Stage30 extends StatefulWidget {
+  final VoidCallback onWin, onFail;
+  const _Stage30({required this.onWin, required this.onFail});
+  @override
+  State<_Stage30> createState() => _Stage30State();
+}
+class _Stage30State extends State<_Stage30> {
+  int _count = 0;
+  bool _done = false;
+  final List<String> _messages = [
+    'افتح...',
+    'افتح... أرجوك...',
+    'خلاص.',
+  ];
+  void _tap() {
+    if (_done) return;
+    HapticFeedback.heavyImpact();
+    setState(() => _count++);
+    if (_count >= 3) {
+      _done = true;
+      HapticFeedback.vibrate();
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (mounted) widget.onWin();
+      });
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      if (_count > 0)
+        Text(_messages[(_count - 1).clamp(0, _messages.length - 1)],
+          textDirection: TextDirection.rtl,
+          style: const TextStyle(color: P.rare, fontSize: 20, letterSpacing: 2)),
+      const SizedBox(height: 40),
+      _roundButton('PRESS', size: 150, onTap: _tap),
+      const SizedBox(height: 20),
+      Text('$_count / 3', style: const TextStyle(color: P.dim, fontSize: 14)),
+    ]));
+  }
+}
 // ═══ شاشة GAME OVER ═══
 class _GameOverScreen extends StatelessWidget {
   final Stage stage;
